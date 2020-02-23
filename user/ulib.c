@@ -32,6 +32,13 @@ strlen(const char *s)
   return n;
 }
 
+// memcpy exists to placate GCC.  Use memmove.
+void*
+memcpy(void *dst, const void *src, uint n)
+{
+  return memmove(dst, src, n);
+}
+
 void*
 memset(void *dst, int c, uint n)
 {

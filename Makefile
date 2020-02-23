@@ -31,6 +31,13 @@ OBJS = \
   $K/virtio_disk.o
 
 KERNEL_BIN=$(K)/kernel
+DEBUG=OFF
+
+ifeq ($(DEBUG), ON)
+DEBUG_OPTION=-O0 -ggdb -g3
+else
+DEBUG_OPTION=-O
+endif
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
 # perhaps in /opt/riscv/bin
@@ -56,7 +63,7 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb
+CFLAGS = -Wall -Werror -fno-omit-frame-pointer $(DEBUG_OPTION)
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
