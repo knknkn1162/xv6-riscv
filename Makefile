@@ -34,7 +34,7 @@ KERNEL_BIN=$(K)/kernel
 DEBUG=OFF
 
 ifeq ($(DEBUG), ON)
-DEBUG_OPTION=-O0 -ggdb -g3
+DEBUG_OPTION=-O0 -ggdb
 else
 DEBUG_OPTION=-O
 endif
@@ -81,7 +81,7 @@ endif
 LDFLAGS = -z max-page-size=4096
 
 $K/kernel: $(OBJS) $K/kernel.ld $U/initcode
-	$(LD) $(LDFLAGS) -T $K/kernel.ld -o $K/kernel $(OBJS) 
+	$(LD) $(LDFLAGS) -T $K/kernel.ld -defsym=PAYLOAD_START=$(PAYLOAD_START) -o $K/kernel $(OBJS)
 	$(OBJDUMP) -S $K/kernel > $K/kernel.asm
 	$(OBJDUMP) -t $K/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $K/kernel.sym
 
